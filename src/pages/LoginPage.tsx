@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
-import { login } from "../services/api";
 
 interface FormData {
   name: string;
@@ -20,6 +19,7 @@ const LoginPage = () => {
       await login(formData.name, formData.email);
       navigate("/search");
     } catch (err: any) {
+      setError(err.message);
       console.error(err);
     }
   };
@@ -31,7 +31,7 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
-      <form className="login-form" onSubmit={handleSubmit}>
+      <form className="login-form" onSubmit={handleSubmit} data-testid="login-form">
         <h1>Login</h1>
         <input
           type="text"

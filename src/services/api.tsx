@@ -15,10 +15,10 @@ export interface LocationResults {
 }
 
 export interface LocationSearchParams {
-  city?: string; // Make city optional
-  states?: string[]; // Make states optional
-  size?: number; // Make size optional
-  from?: number; // Add from parameter
+  city?: string;
+  states?: string[];
+  size?: number;
+  from?: number;
 }
 
 export interface LocationFilter {
@@ -33,7 +33,6 @@ export interface SearchParams {
   size: number;
   from: number;
   locationFilter: LocationFilter;
-  // Optionally add zipCodes when calling searchDogs:
   zipCodes?: string[];
 }
 
@@ -60,7 +59,7 @@ export interface User {
 }
 
 export const fetchBreeds = async (): Promise<string[]> => {
-  const response = await fetch(`${API_BASE_URL}/dogs/breeds`, { // Corrected endpoint
+  const response = await fetch(`${API_BASE_URL}/dogs/breeds`, {
     credentials: "include",
   });
   if (!response.ok) {
@@ -91,12 +90,10 @@ export const searchDogs = async (
 ): Promise<SearchResults> => {
   const url = new URL(`${API_BASE_URL}/dogs/search`);
 
-  // Add query parameters
   url.searchParams.append("sort", `${params.sortField}:${params.sortDirection}`);
   url.searchParams.append("size", params.size.toString());
   url.searchParams.append("from", params.from.toString());
 
-  // Add breeds and zipCodes as query parameters
   params.breeds.forEach((breed) => url.searchParams.append("breeds", breed));
   params.zipCodes?.forEach((zip) => url.searchParams.append("zipCodes", zip));
 
@@ -142,7 +139,7 @@ export const fetchLocations = async (zipCodes: string[]): Promise<Location[]> =>
 };
 
 export const generateMatch = async (favoriteIds: string[]): Promise<string> => {
-  const response = await fetch(`${API_BASE_URL}/dogs/match`, { // Corrected endpoint
+  const response = await fetch(`${API_BASE_URL}/dogs/match`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -157,17 +154,18 @@ export const generateMatch = async (favoriteIds: string[]): Promise<string> => {
   return data.match;
 };
 
-export const login = async (credentials: { name: string; email: string }): Promise<User> => {
+export const login = async (credentials: { name: string; email: string }): Promise<void> => {
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
     body: JSON.stringify(credentials),
   });
+  
   if (!response.ok) {
     throw new Error(`Login failed: ${response.status}`);
   }
-  return await response.json();
+  return;
 };
 
 export const logout = async (): Promise<void> => {

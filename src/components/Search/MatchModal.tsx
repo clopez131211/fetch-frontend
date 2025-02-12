@@ -2,9 +2,11 @@ import React from "react";
 import { useDogs, Dog } from "../../contexts/DogsContext";
 
 const MatchModal = (): JSX.Element | null => {
-  const { match, setMatch } = useDogs();
+  const { match, setMatch, locationsMap } = useDogs();
 
   if (!match) return null;
+
+  const location = locationsMap[match.zip_code];
 
   return (
     <div className="match-modal-overlay">
@@ -14,7 +16,11 @@ const MatchModal = (): JSX.Element | null => {
         <h3>{match.name}</h3>
         <p>Breed: {match.breed}</p>
         <p>Age: {match.age}</p>
-        <p>Location: {match.zip_code}</p>
+        <div className="location-info">
+          <p>City: {location?.city || "N/A"}</p>
+          <p>State: {location?.state || "N/A"}</p>
+          <p>County: {location?.county || "N/A"}</p>
+        </div>
         <button onClick={() => setMatch(null)}>Close</button>
       </div>
     </div>

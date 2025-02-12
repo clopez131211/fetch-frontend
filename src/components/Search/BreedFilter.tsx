@@ -20,10 +20,11 @@ const BreedFilter = (): JSX.Element => {
     <div className="breed-filter">
       <label htmlFor="breed-select">Filter by Breed:</label>
       <select
-        id="breed-select"
-        multiple={true}
+        multiple
+        role="listbox"
         value={searchParams.breeds}
         onChange={handleBreedChange}
+        data-testid="breed-select"
       >
         {breeds.map((breed: string) => (
           <option key={breed} value={breed}>

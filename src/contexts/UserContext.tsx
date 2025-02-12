@@ -8,14 +8,12 @@ import React, {
 } from "react";
 import { login as apiLogin, logout as apiLogout } from "../services/api";
 
-// Define the User type
 interface User {
+  name: string;
   email: string;
-  // Add other user properties as needed
 }
 
-// Define the context value type
-interface UserContextType {
+export interface UserContextType {
   user: User | null;
   setUser: Dispatch<SetStateAction<User | null>>;
   login: (name: string, email: string) => Promise<void>;
@@ -25,16 +23,22 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  // Initialize user from localStorage
+  const [user, setUser] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   const login = async (name: string, email: string) => {
     try {
-      // Call the API login passing an object with "name" and "email"
       await apiLogin({ name, email });
-      // Since the API returns only an auth cookie, use the provided email
-      setUser({ email }); // Use the email provided during login
+      const userData = { name, email };
+      setUser(userData);
+      // Save to localStorage
+      localStorage.setItem('user', JSON.stringify(userData));
     } catch (error) {
       console.error("Login error:", error);
+      throw error;
     }
   };
 
@@ -42,8 +46,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       await apiLogout();
       setUser(null);
+      // Clear from localStorage
+      localStorage.removeItem('user');
     } catch (error) {
       console.error("Logout error:", error);
+      throw error;
     }
   };
 
@@ -59,3 +66,5 @@ export const useUser = (): UserContextType => {
   }
   return context;
 };
+
+export { UserContext };

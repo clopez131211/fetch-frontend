@@ -28,8 +28,8 @@ function SearchPage(): JSX.Element {
       <div className="main-content">
         <div className="content-wrapper">
           {loading ? (
-            <div className="spinner-container">
-              <div className="spinner"></div>
+            <div className="spinner-container" data-testid="spinner-container">
+              <div className="spinner" data-testid="spinner" />
             </div>
           ) : (
             <DogList dogs={dogs} loading={loading} error={error} />

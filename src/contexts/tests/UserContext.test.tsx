@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, FC } from "react";
 import { render, screen, act, fireEvent } from "@testing-library/react";
-import { UserProvider, useUser } from "../UserContext";
+import { UserProvider, useUser, UserContextType } from "../UserContext";
 import { logout as apiLogout } from "../../services/api";
 
 jest.mock("../../services/api", () => ({
   logout: jest.fn().mockResolvedValue({ ok: true }),
 }));
 
+// Define the props for our test component.
+interface TestComponentProps {
+  onRender: (values: Pick<UserContextType, "user" | "setUser" | "logout">) => void;
+}
+
 // Component to capture the context's current values.
-const TestComponent = ({ onRender }) => {
+const TestComponent: FC<TestComponentProps> = ({ onRender }) => {
   const { user, setUser, logout } = useUser();
   useEffect(() => {
     onRender({ user, setUser, logout });
@@ -17,8 +22,8 @@ const TestComponent = ({ onRender }) => {
 };
 
 test("provides default context values", () => {
-  let contextValues;
-  const handleRender = (values) => {
+  let contextValues: Pick<UserContextType, "user" | "setUser" | "logout"> = {} as Pick<UserContextType, "user" | "setUser" | "logout">;
+  const handleRender = (values: Pick<UserContextType, "user" | "setUser" | "logout">) => {
     contextValues = values;
   };
 
@@ -34,12 +39,12 @@ test("provides default context values", () => {
 });
 
 // Component to simulate setting a user and then logging out.
-const LogoutTestComponent = () => {
+const LogoutTestComponent: FC = () => {
   const { user, setUser, logout } = useUser();
   return (
     <div>
-      <div data-testid="user">{user ? user.name : "No User"}</div>
-      <button onClick={() => setUser({ name: "Test User" })}>Login</button>
+      <div data-testid="user">{user ? (user as any).name : "No User"}</div>
+      <button onClick={() => setUser({ name: "Test User" } as any)}>Login</button>
       <button onClick={async () => await logout()}>Logout</button>
     </div>
   );
