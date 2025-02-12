@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDogs } from "../../contexts/DogsContext";
 import { SearchParams } from "../../contexts/DogsContext";
 
-interface LocationFilterProps {}
-
-const LocationFilter: React.FC<LocationFilterProps> = () => {
+const LocationFilter: React.FC = () => {
   const { searchParams, setSearchParams, dogs } = useDogs();
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCity = e.target.value;
     setSearchParams((prev) => ({
       ...prev,
       locationFilter: {
         ...prev.locationFilter,
-        city: e.target.value,
+        city: newCity,
       },
     }));
   };
@@ -25,7 +24,7 @@ const LocationFilter: React.FC<LocationFilterProps> = () => {
       <input
         type="text"
         id="city"
-        value={searchParams.locationFilter.city || ""}
+        value={searchParams.locationFilter.city}
         onChange={handleCityChange}
       />
       {uniqueZips.map((zip) => (

@@ -3,12 +3,10 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import SortControl from "../SortControl";
 import { SearchParams, DogsContextType } from "../../../contexts/DogsContext";
 
-// Mock the DogsContext module at the top level
 jest.mock("../../../contexts/DogsContext", () => ({
   useDogs: jest.fn(),
 }));
 
-// Import the mocked useDogs
 import { useDogs } from "../../../contexts/DogsContext";
 
 describe("SortControl", () => {
@@ -28,7 +26,6 @@ describe("SortControl", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    // Set up the mock implementation for useDogs
     (useDogs as jest.Mock).mockReturnValue({
       searchParams: initialSearchParams,
       setSearchParams: mockSetSearchParams,
@@ -38,15 +35,12 @@ describe("SortControl", () => {
   test("renders label and select with correct options", () => {
     render(<SortControl />);
 
-    // Check label
     expect(screen.getByText("Sort By:")).toBeInTheDocument();
 
-    // Check select element and its initial value
     const select = screen.getByRole("combobox");
     expect(select).toBeInTheDocument();
     expect((select as HTMLSelectElement).value).toBe("breed:asc");
 
-    // Check option elements and their values
     const options = screen.getAllByRole("option");
     expect(options).toHaveLength(6);
     expect(options[0]).toHaveValue("breed:asc");
@@ -62,15 +56,11 @@ describe("SortControl", () => {
 
     const select = screen.getByRole("combobox");
 
-    // Simulate changing select value to "name:desc"
     fireEvent.change(select, { target: { value: "name:desc" } });
 
-    // Expect setSearchParams to be called once
     expect(mockSetSearchParams).toHaveBeenCalledTimes(1);
     
-    // Retrieve the updater function passed to setSearchParams
     const updater = mockSetSearchParams.mock.calls[0][0];
-    // Test the updater function
     const previousState = { ...initialSearchParams, extra: "value" };
     const newState = updater(previousState);
 
