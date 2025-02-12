@@ -1,22 +1,21 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import BreedFilter from "../BreedFilter";
-import { DogsProvider } from "../../../contexts/DogsContext";
+import { DogsContext } from "../../../contexts/DogsContext";
 
 test("displays breed options", () => {
   const mockBreeds = ["Labrador", "Poodle"];
+  const mockValue = {
+    breeds: mockBreeds,
+    searchParams: { breeds: [] },
+    setSearchParams: jest.fn(),
+    loadBreeds: jest.fn(),
+  };
 
   render(
-    <DogsProvider
-      value={{
-        breeds: mockBreeds,
-        searchParams: { breeds: [] },
-        setSearchParams: jest.fn(),
-        loadBreeds: jest.fn(),
-      }}
-    >
+    <DogsContext.Provider value={mockValue}>
       <BreedFilter />
-    </DogsProvider>
+    </DogsContext.Provider>
   );
 
   const select = screen.getByRole("listbox");

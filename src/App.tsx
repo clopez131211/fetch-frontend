@@ -14,7 +14,7 @@ import "./index.css";
 import "./App.css";
 import "./Spinner.css";
 
-function App() {
+function App(): JSX.Element {
   return (
     <Router>
       <UserProvider>

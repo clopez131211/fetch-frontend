@@ -4,6 +4,7 @@ jest.mock("../../services/api", () => ({
 
 import { render, screen, fireEvent } from "@testing-library/react";
 import LoginPage from "../LoginPage";
+import { UserProvider } from "../../contexts/UserContext";
 
 describe("LoginPage", () => {
   beforeEach(() => {
@@ -14,7 +15,11 @@ describe("LoginPage", () => {
     const { login } = require("../../services/api");
     login.mockResolvedValue({ ok: true });
 
-    render(<LoginPage />);
+    render(
+      <UserProvider>
+        <LoginPage />
+      </UserProvider>
+    );
 
     fireEvent.change(screen.getByPlaceholderText("Name"), {
       target: { value: "John" },
@@ -22,7 +27,7 @@ describe("LoginPage", () => {
     fireEvent.change(screen.getByPlaceholderText("Email"), {
       target: { value: "john@test.com" },
     });
-    fireEvent.click(screen.getByText("Login"));
+    fireEvent.click(screen.getByRole("button", { name: "Login" }));
 
     expect(login).toHaveBeenCalledWith("John", "john@test.com");
   });

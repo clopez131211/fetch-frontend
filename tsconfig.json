@@ -1,7 +1,7 @@
 {
     "include": [
         "./src/**/*"
-    ],
+, "mocks"    ],
     "compilerOptions": {
         "strict": true,
         "esModuleInterop": true,
