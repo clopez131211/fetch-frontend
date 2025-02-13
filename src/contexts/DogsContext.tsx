@@ -113,6 +113,7 @@ export const DogsProvider = ({ children }: { children: ReactNode }): JSX.Element
       states: [],
     },
   });
+  
   const [pagination, setPagination] = useState<Pagination>({
     total: 0,
     next: null,

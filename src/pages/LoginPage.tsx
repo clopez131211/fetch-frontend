@@ -7,7 +7,7 @@ interface FormData {
   email: string;
 }
 
-const LoginPage = () => {
+function LoginPage(): JSX.Element {
   const [formData, setFormData] = useState<FormData>({ name: "", email: "" });
   const [error, setError] = useState<string>("");
   const { login } = useUser();
