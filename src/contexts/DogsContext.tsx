@@ -14,8 +14,7 @@ import {
   searchDogs,
   fetchDogsByIds,
   generateMatch,
-  fetchLocations,
-  searchLocations,
+  fetchLocations
 } from "../services/api";
 
 export interface Dog {
@@ -133,51 +132,36 @@ export const DogsProvider = ({ children }: { children: ReactNode }): JSX.Element
     try {
       setLoading(true);
       setError(null);
-
-      const locationData = await searchLocations({
-        city: params.locationFilter.city,
-        states: params.locationFilter.states,
-        size: 10000,
-      });
-      const zips = locationData.results.map((loc: Location) => loc.zip_code);
-      setLocationResults({ zips, total: locationData.total });
-
-      const searchParamsWithSort = {
+      let zipCodes: string[] | undefined;
+      
+      if (params.zipCodes && params.zipCodes.length > 0) {
+        zipCodes = params.zipCodes;
+      } else if (params.locationFilter && params.locationFilter.city.trim() !== "") {
+        const locationData = await fetchLocations([params.locationFilter.city]);
+        if (locationData && locationData.length > 0) {
+          zipCodes = locationData
+            .filter((loc: Location | null) => loc !== null)
+            .map((loc: Location) => loc.zip_code);
+        }
+      }
+      
+      const searchPayload = {
         ...params,
-        zipCodes: zips,
-        size: params.size,
-        from: params.from,
+        zipCodes,
         sort: `${params.sortField}:${params.sortDirection}`,
       };
-
-      const { resultIds, total, next, prev } = await searchDogs(searchParamsWithSort);
-
-      const dogsData = await fetchDogsByIds(resultIds);
-      setDogs(dogsData);
-
-      const uniqueZips = Array.from(new Set(dogsData.map((dog) => dog.zip_code)));
-      const locations = await fetchLocations(uniqueZips);
-      setLocationsMap((prevMap) => ({
-        ...prevMap,
-        ...locations.reduce((acc: { [key: string]: { city: string; state: string; county: string } }, loc: Location) => {
-          if (loc?.zip_code) {
-            acc[loc.zip_code] = {
-              city: loc.city,
-              state: loc.state,
-              county: loc.county,
-            };
-          }
-          return acc;
-        }, {}),
-      }));
-
+  
+      const { resultIds, total, next, prev } = await searchDogs(searchPayload);
       setPagination({ total, next, prev });
-    } catch (err: any) {
-      setError(err.message || "Search failed");
+  
+      const fetchedDogs = await fetchDogsByIds(resultIds);
+      setDogs(fetchedDogs);
+    } catch (error: any) {
+      setError(error.message || "Search failed");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [setLoading, setError, setDogs]);
 
   const addToFavorites = (dog: Dog): void => {
     setFavorites((prev) => {

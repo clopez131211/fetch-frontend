@@ -43,11 +43,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = async () => {
     try {
       await apiLogout();
-      setUser(null);
-      localStorage.removeItem('user');
     } catch (error) {
       console.error("Logout error:", error);
-      throw error;
+    } finally {
+      setUser(null);
+      localStorage.removeItem('user');
     }
   };
 

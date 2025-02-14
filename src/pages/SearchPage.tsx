@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDogs } from "../contexts/DogsContext";
 import BreedFilter from "../components/Search/BreedFilter";
+import ZipCodeFilter from "../components/Search/ZipCodeFilter";
 import SortControl from "../components/Search/SortControl";
 import DogList from "../components/Search/DogList";
 import Pagination from "../components/Search/Pagination";
@@ -22,6 +23,7 @@ function SearchPage(): JSX.Element {
       <div className="filters-section">
         <h1>Find Your Perfect Dog</h1>
         <BreedFilter />
+        <ZipCodeFilter />
         <SortControl />
       </div>
 
@@ -40,7 +42,6 @@ function SearchPage(): JSX.Element {
           </div>
         </div>
       </div>
-
       <FavoritesPanel />
       <MatchModal />
     </div>

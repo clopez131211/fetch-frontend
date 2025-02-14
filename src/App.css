@@ -81,14 +81,11 @@ body {
   background-color: #ff5252;
 }
 
-/* Search Page Layout */
 .search-page {
   display: grid;
-  grid-template-columns: 250px minmax(0, 1fr) 300px;
+  grid-template-columns: 400px minmax(0, 1fr) 300px;
   gap: 2rem;
   padding: 2rem;
-  max-width: 1600px;
-  margin: 0 auto;
   position: relative;
 }
 
@@ -108,6 +105,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
+  min-width: 400px;
 }
 
 .breed-filter select {
@@ -126,7 +124,6 @@ body {
   width: 100%;
 }
 
-/* Dog Grid */
 .dog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -188,7 +185,6 @@ body {
   border-bottom: 1px solid #eee;
 }
 
-/* Match Modal */
 .match-modal-overlay {
   position: fixed;
   top: 0;
@@ -250,48 +246,78 @@ body {
   cursor: not-allowed;
 }
 
-/* Responsive Design */
-@media (max-width: 1440px) {
-  .search-page {
-    grid-template-columns: 250px minmax(0, 1fr);
-    gap: 1.5rem;
-  }
+.zip-code-filter .zip-code-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
 
+.zip-code-filter .zip-code-input-group input {
+  margin-bottom: 0; /* Remove extra margin */
+}
+
+.zip-code-filter .zip-code-input-group button {
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 1440px) and (min-width: 1025px) {
+  .search-page {
+    grid-template-columns: 400px minmax(0, 1fr);
+    grid-template-areas:
+      "filters main"
+      "filters favorites";
+    gap: 2rem;
+  }
+  
+  .filters-section {
+    grid-area: filters;
+    position: sticky;
+    top: 84px;
+    height: calc(100vh - 84px);
+  }
+  
+  .main-content {
+    grid-area: main;
+    min-width: 0;
+  }
+  
   .favorites-panel {
-    grid-column: 1 / -1;
+    grid-area: favorites;
     position: static;
     width: 100%;
     height: auto;
     margin-top: 2rem;
-  }
-
-  .main-content {
-    grid-column: 2;
   }
 }
 
 @media (max-width: 1024px) {
   .search-page {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "filters"
+      "main"
+      "favorites";
     gap: 1rem;
   }
-
+  
   .filters-section {
+    grid-area: filters;
     position: static;
     height: auto;
     margin-bottom: 1rem;
   }
-
+  
   .main-content {
-    grid-column: 1;
+    grid-area: main;
   }
-
+  
   .favorites-panel {
+    grid-area: favorites;
     margin-top: 1rem;
   }
 }
 
-/* Mobile Styles */
 @media (max-width: 768px) {
   .header {
     padding: 1rem;
