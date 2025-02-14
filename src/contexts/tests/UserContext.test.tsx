@@ -7,12 +7,10 @@ jest.mock("../../services/api", () => ({
   logout: jest.fn().mockResolvedValue({ ok: true }),
 }));
 
-// Define the props for our test component.
 interface TestComponentProps {
   onRender: (values: Pick<UserContextType, "user" | "setUser" | "logout">) => void;
 }
 
-// Component to capture the context's current values.
 const TestComponent: FC<TestComponentProps> = ({ onRender }) => {
   const { user, setUser, logout } = useUser();
   useEffect(() => {
@@ -38,7 +36,6 @@ test("provides default context values", () => {
   expect(typeof contextValues.logout).toBe("function");
 });
 
-// Component to simulate setting a user and then logging out.
 const LogoutTestComponent: FC = () => {
   const { user, setUser, logout } = useUser();
   return (
@@ -57,11 +54,9 @@ test("logout resets user and calls apiLogout", async () => {
     </UserProvider>
   );
 
-  // Set a user.
   fireEvent.click(screen.getByText("Login"));
   expect(screen.getByTestId("user").textContent).toBe("Test User");
 
-  // Trigger logout.
   await act(async () => {
     fireEvent.click(screen.getByText("Logout"));
   });

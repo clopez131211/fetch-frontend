@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import BreedFilter from "../BreedFilter";
 import { useDogs } from "../../../contexts/DogsContext";
 
-// Mock the DogsContext
 jest.mock("../../../contexts/DogsContext", () => ({
   useDogs: jest.fn()
 }));
@@ -68,11 +67,9 @@ describe("BreedFilter", () => {
 
     const select = screen.getByRole("listbox") as HTMLSelectElement;
     
-    // Set selected options
     select.multiple = true;
-    select.value = "";  // Reset value
-    select.options[0].selected = true;  // Select first option (Labrador)
-
+    select.value = "";
+    select.options[0].selected = true;
     fireEvent.change(select);
 
     expect(mockSetSearchParams).toHaveBeenCalled();

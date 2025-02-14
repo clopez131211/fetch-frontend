@@ -3,7 +3,6 @@ import "@testing-library/jest-dom";
 import App from "./App";
 import React from "react";
 
-// Mock react-router-dom
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   MemoryRouter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
@@ -12,7 +11,6 @@ jest.mock("react-router-dom", () => ({
   Navigate: () => <div>Redirecting...</div>,
 }));
 
-// Mock the context providers
 jest.mock("./contexts/UserContext", () => ({
   UserProvider: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="user-provider">{children}</div>
@@ -25,11 +23,9 @@ jest.mock("./contexts/DogsContext", () => ({
   ),
 }));
 
-// Mock the pages
 jest.mock("./pages/LoginPage", () => () => <div>Login Page</div>);
 jest.mock("./pages/SearchPage", () => () => <div>Search Page</div>);
 
-// Import MemoryRouter from the mocked react-router-dom
 const { MemoryRouter } = require("react-router-dom");
 
 describe("App", () => {

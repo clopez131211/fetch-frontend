@@ -4,7 +4,6 @@ import React from "react";
 import SearchPage from "../SearchPage";
 import { useDogs } from "../../contexts/DogsContext";
 
-// Mock all child components
 jest.mock("../../components/Search/BreedFilter", () => () => (
   <div data-testid="breed-filter">Breed Filter</div>
 ));
@@ -37,7 +36,6 @@ jest.mock("../../components/Header", () => () => (
   <div data-testid="header">Header</div>
 ));
 
-// Mock the DogsContext
 jest.mock("../../contexts/DogsContext", () => ({
   useDogs: jest.fn(),
 }));

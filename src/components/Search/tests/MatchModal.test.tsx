@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import MatchModal from '../MatchModal';
 import { useDogs } from '../../../contexts/DogsContext';
 
-// Mock the useDogs hook
 jest.mock('../../../contexts/DogsContext', () => ({
   useDogs: jest.fn()
 }));
@@ -51,7 +50,6 @@ describe('MatchModal', () => {
 
     render(<MatchModal />);
 
-    // Check if all match information is displayed
     expect(screen.getByText('Your Perfect Match!')).toBeInTheDocument();
     expect(screen.getByText(mockMatch.name)).toBeInTheDocument();
     expect(screen.getByText(`Breed: ${mockMatch.breed}`)).toBeInTheDocument();
@@ -77,7 +75,7 @@ describe('MatchModal', () => {
     (useDogs as jest.Mock).mockImplementation(() => ({
       match: mockMatch,
       setMatch: mockSetMatch,
-      locationsMap: {}  // Empty locations map
+      locationsMap: {}
     }));
 
     render(<MatchModal />);

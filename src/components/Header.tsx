@@ -13,7 +13,7 @@ const Header = (): JSX.Element => {
 
   return (
     <header className="header">
-      <div className="welcome-text">Welcome, {user?.email}</div>
+      <div className="welcome-text">Welcome, {user?.name}</div>
       <button onClick={handleLogout} className="logout-button">
         Logout
       </button>

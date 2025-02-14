@@ -71,11 +71,9 @@ describe('DogList', () => {
   it('renders dog list with location information', () => {
     render(<DogList dogs={mockDogs} loading={false} error={null} />);
 
-    // Check if dogs are rendered
     expect(screen.getByText('Max')).toBeInTheDocument();
     expect(screen.getByText('Bella')).toBeInTheDocument();
 
-    // Check if location info is rendered
     expect(screen.getByText('City: New York')).toBeInTheDocument();
     expect(screen.getByText('State: NY')).toBeInTheDocument();
     expect(screen.getByText('City: Los Angeles')).toBeInTheDocument();
@@ -85,12 +83,10 @@ describe('DogList', () => {
   it('handles favorite toggling', () => {
     render(<DogList dogs={mockDogs} loading={false} error={null} />);
 
-    // First dog should have "Remove from Favorites" button (already in favorites)
     const removeButton = screen.getByText('Remove from Favorites');
     fireEvent.click(removeButton);
     expect(mockRemoveFromFavorites).toHaveBeenCalledWith('1');
 
-    // Second dog should have "Add to Favorites" button
     const addButton = screen.getByText('Add to Favorites');
     fireEvent.click(addButton);
     expect(mockAddToFavorites).toHaveBeenCalledWith(mockDogs[1]);
@@ -99,7 +95,7 @@ describe('DogList', () => {
   it('displays loading state for missing location', () => {
     const dogsWithMissingLocation = [{
       ...mockDogs[0],
-      zip_code: '99999' // zip code not in locationsMap
+      zip_code: '99999'
     }];
 
     render(<DogList dogs={dogsWithMissingLocation} loading={false} error={null} />);

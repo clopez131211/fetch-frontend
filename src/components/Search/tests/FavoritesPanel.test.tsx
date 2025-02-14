@@ -4,7 +4,6 @@ import FavoritesPanel from '../FavoritesPanel';
 import { useDogs } from '../../../contexts/DogsContext';
 import { fetchDogsByIds } from '../../../services/api';
 
-// Mock the dependencies
 jest.mock('../../../contexts/DogsContext', () => ({
   useDogs: jest.fn()
 }));

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../contexts/UserContext';
 import LoginPage from '../LoginPage';
 
-// Mock dependencies
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
@@ -29,7 +28,6 @@ describe('LoginPage', () => {
     mockLogin.mockResolvedValueOnce(undefined);
     render(<LoginPage />);
 
-    // Fill form
     fireEvent.change(screen.getByPlaceholderText('Name'), {
       target: { name: 'name', value: 'John Doe' }
     });
@@ -37,7 +35,6 @@ describe('LoginPage', () => {
       target: { name: 'email', value: 'john@example.com' }
     });
 
-    // Submit form
     const form = screen.getByTestId('login-form');
     fireEvent.submit(form);
 
@@ -52,7 +49,6 @@ describe('LoginPage', () => {
     mockLogin.mockRejectedValueOnce(mockError);
     render(<LoginPage />);
 
-    // Fill form
     fireEvent.change(screen.getByPlaceholderText('Name'), {
       target: { name: 'name', value: 'John Doe' }
     });
@@ -60,7 +56,6 @@ describe('LoginPage', () => {
       target: { name: 'email', value: 'john@example.com' }
     });
 
-    // Submit form
     const form = screen.getByTestId('login-form');
     fireEvent.submit(form);
 

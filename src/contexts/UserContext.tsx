@@ -23,7 +23,6 @@ export interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Initialize user from localStorage
   const [user, setUser] = useState<User | null>(() => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
@@ -34,7 +33,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await apiLogin({ name, email });
       const userData = { name, email };
       setUser(userData);
-      // Save to localStorage
       localStorage.setItem('user', JSON.stringify(userData));
     } catch (error) {
       console.error("Login error:", error);
@@ -46,7 +44,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       await apiLogout();
       setUser(null);
-      // Clear from localStorage
       localStorage.removeItem('user');
     } catch (error) {
       console.error("Logout error:", error);
